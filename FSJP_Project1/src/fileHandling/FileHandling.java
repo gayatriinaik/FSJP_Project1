@@ -12,20 +12,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * This class performs all the file related operations.
+ * 
  * @author gayatriinaik
  *
  */
 public class FileHandling {
 
-	// https://www.geeksforgeeks.org/how-to-validate-image-file-extension-using-regular-expression/
 	private static Pattern extPattern = Pattern.compile("([^\\s]+(\\.(?i)(txt|xml|php|java))$)");
 	private static String dirPath = new File("").getAbsolutePath();
 
 	/**
+	 * Entry point of the program. Display welcome message, check directory and
+	 * display the main menu to proceed with further operations.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		System.out.println("Welcome to Company Lockers Pvt. Ltd." + "\n" + "Application Name : LockedMe.com" + "\n"
 				+ "Developer Details: Gayatri Naik");
 		System.out.println("This application will help you to access your files and directories easily. "
@@ -35,6 +38,14 @@ public class FileHandling {
 		displayMenu(sc);
 	}
 
+	/**
+	 * Method to check if the user wants to continue with the default directory or
+	 * change the directory to perform the file related operations in the desired
+	 * directory.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void checkDirectory(Scanner scanner) {
 		System.out.println("Enter 'Y' if you want to perform all the file operations in the default directory "
 				+ "or Enter 'N' if you want to specify a different directory");
@@ -49,6 +60,13 @@ public class FileHandling {
 		}
 	}
 
+	/**
+	 * Change the directory to perform the file related operations in the user
+	 * defined directory.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void changeDirectory(Scanner scanner) {
 		System.out.println("Please enter the directory path");
 		File dirFile = new File(scanner.next());
@@ -65,6 +83,13 @@ public class FileHandling {
 		}
 	}
 
+	/**
+	 * Method to display the Main Menu and invoke appropriate methods as per the
+	 * user choice.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void displayMenu(Scanner scanner) {
 		System.out.println("Main Menu :" + "\n" + "Press '1' to List the files in ascending order." + "\n"
 				+ "Press '2' to Perform other operations from the Sub-Menu. " + "\n"
@@ -89,6 +114,12 @@ public class FileHandling {
 		scanner.close();
 	}
 
+	/**
+	 * Method to display the Sub-Menu.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void displaySubMenu(Scanner scanner) {
 		System.out.println("Sub Menu: " + "\n" + "Enter 'a' to Add a new file." + "\n"
 				+ "Enter 'b' to Delete an exisitng file." + "\n" + "Enter 'c' for Searching the file." + "\n"
@@ -96,6 +127,14 @@ public class FileHandling {
 		checkFileOptions(scanner);
 	}
 
+	/**
+	 * Method to list all the files and folders from the directory.
+	 * 
+	 * @param directory
+	 *            directory path
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void listFiles(String directory, Scanner scanner) {
 		File fileDir = new File(directory);
 		if (fileDir.isDirectory()) {
@@ -115,12 +154,24 @@ public class FileHandling {
 		checkAgain(scanner, false);
 	}
 
+	/**
+	 * Method to exit the application.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void exitApplication(Scanner scanner) {
 		scanner.close();
 		System.out.println("Thank you for using the application.");
 		System.exit(0);
 	}
 
+	/**
+	 * Method to continue with the application and display the main menu.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void checkAgain(Scanner scanner, boolean isSubMenu) {
 		System.out.println("Do you want to continue with the application? Enter 'Y' or 'N'.");
 		String option = scanner.next();
@@ -145,6 +196,12 @@ public class FileHandling {
 		}
 	}
 
+	/**
+	 * Method to continue with the application and display the sub menu.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void checkAgainSubMenu(Scanner scanner) {
 		System.out.println("Do you want to continue with the application? Enter 'Y' or 'N'.");
 		String option = scanner.next();
@@ -158,6 +215,12 @@ public class FileHandling {
 		}
 	}
 
+	/**
+	 * Method to check the user input and invoke appropriate methods.
+	 * 
+	 * @param scanner
+	 *            input from the user
+	 */
 	public static void checkFileOptions(Scanner scanner) {
 		String fileOption = scanner.next();
 		if (fileOption.equalsIgnoreCase("a")) {
@@ -176,15 +239,21 @@ public class FileHandling {
 		}
 	}
 
+	/**
+	 * Method to add a new file. Check the file extension, if it is a valid
+	 * extension (txt, php, xml or java) then check if file already exists in the
+	 * directory or not. If it exists then display the message that 'File already
+	 * exists', else create a new file and add default text in the file : "File
+	 * created by LockedMe application on {}" with current date time. If the
+	 * extension is invalid then display the message. If the
+	 * 
+	 * @param scanner
+	 */
 	public static void addNewFile(Scanner scanner) {
 		System.out.println("Please enter the file name along with the extension. Eg: demo.txt");
-		// create a file object for the current location
 		File file = new File(dirPath, scanner.next());
 		try {
 			if (validateFileExtn(file.getName())) {
-				// split string to check extension & create file accordingly
-				// create a new file with name specified
-				// by the file object
 				boolean value = file.createNewFile();
 				if (value) {
 					System.out.println("New File " + file.getName() + " is created.");
@@ -205,13 +274,18 @@ public class FileHandling {
 		checkAgain(scanner, true);
 	}
 
+	/**
+	 * Method to delete the file specified by the user. The file name is case
+	 * sensitive.
+	 * 
+	 * @param scanner
+	 *            file name
+	 */
 	public static void deleteFile(Scanner scanner) {
 		System.out.println("Please enter the file name");
 		File file = new File(dirPath, scanner.next());
 		try {
-//			String fileName = file.getCanonicalPath().substring(dirPath.length());
-			 if (file.getCanonicalPath().equals(file.getAbsolutePath())) {
-//			if (fileName.substring(1).equals(file.getName())) {
+			if (file.getCanonicalPath().equals(file.getAbsolutePath())) {
 				if (file.delete()) {
 					System.out.println(file.getName() + " deleted successfully.");
 				} else {
@@ -226,12 +300,19 @@ public class FileHandling {
 		checkAgain(scanner, true);
 	}
 
+	/**
+	 * Method to search the file specified by the user. The file name is case
+	 * sensitive.
+	 * 
+	 * @param scanner
+	 *            file name
+	 */
 	public static void searchFile(Scanner scanner) {
 		System.out.println("Enter the file name");
 		File file = new File(dirPath, scanner.next());
 		try {
 			if (file.getCanonicalPath().equals(file.getAbsolutePath()) && file.exists()) {
-				System.out.println("File " + file.getName() +" exists");
+				System.out.println("File " + file.getName() + " exists");
 			} else {
 				System.out.println("File " + file.getName() + " does not exist");
 			}
@@ -241,8 +322,16 @@ public class FileHandling {
 		checkAgain(scanner, true);
 	}
 
-	public static boolean validateFileExtn(String userName) {
-		Matcher mtch = extPattern.matcher(userName);
+	/**
+	 * Method to validate the file extension before adding a new file.
+	 * 
+	 * @param fileName
+	 *            name of the file
+	 * @return true if the file extension given by the user is txt, xml, php or java
+	 *         else return false.
+	 */
+	public static boolean validateFileExtn(String fileName) {
+		Matcher mtch = extPattern.matcher(fileName);
 		if (mtch.matches()) {
 			return true;
 		}
